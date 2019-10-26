@@ -9,6 +9,12 @@ namespace RecortaImagenes
     {
         static void Main(string[] args)
         {
+            if (args.Length < 3 || args.Length > 4)
+            {
+                Console.WriteLine("RecortaImagenes.exe #ROWS #COLUMNS <InputPathImage> <Optional OutputPathFolder>");
+                Console.WriteLine("Ex: RecortaImagenes.exe 3 3  \"C:\\whateverpicture.jgp\" \"F:\\InstagramFeedPics\"");
+                Environment.Exit(-1);
+            }
             string path;
             uint.TryParse(args[0], out uint Filas);
             uint.TryParse(args[1], out uint Columnas);
@@ -73,7 +79,7 @@ namespace RecortaImagenes
                 {
                     Rectangle currentRectangle = new Rectangle(i * width, j * Height, width, Height);
                     Console.WriteLine($"Creating Image {k}\t dimensions--->\tx:{currentRectangle.X}\ty:{currentRectangle.Y}\twidth:{currentRectangle.Width}\theight:{currentRectangle.Height}");
-                    var bm = myBmp.Clone(currentRectangle, PixelFormat.Format32bppRgb);
+                    var bm = myBmp.Clone(currentRectangle, PixelFormat.Format32bppArgb);
                     bm.Save($"{path}\\{k}.jpg");
                     k--;
                 }
