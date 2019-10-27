@@ -34,7 +34,11 @@ namespace RecortaImagenes
                 }
 
             }
-            path = $"{Directory.GetCurrentDirectory()}\\InstagramFeed";
+            else
+            {
+                path = $"{Directory.GetCurrentDirectory()}\\InstagramFeed";
+            }
+
 
             if (!Directory.Exists(path))
             {
