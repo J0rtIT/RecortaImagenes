@@ -1,6 +1,8 @@
 ﻿using System;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
@@ -11,21 +13,37 @@ namespace WpFVersion
     /// </summary>
     public partial class MainWindow : Window
     {
-        private BitmapImage _currentImage = new BitmapImage();
 
+        void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            Pbar.Value = e.ProgressPercentage;
+        }
+        void worker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            for (int i = 0; i < 100; i++)
+            {
+                (sender as BackgroundWorker).ReportProgress(i);
+                Thread.Sleep(100);
+            }
+        }
+
+        private BitmapImage _currentImage = new BitmapImage();
         private string _path;
 
         void saveCroppedBitmap(CroppedBitmap image, string path, uint k)
         {
             string local = $"{path}\\{k}.jpg";
 
-            FileStream mStream = new FileStream(local, FileMode.Create);
-            JpegBitmapEncoder jEncoder = new JpegBitmapEncoder();
-            jEncoder.Frames.Add(BitmapFrame.Create(image));
-            jEncoder.Save(mStream);
+            using (FileStream mStream = new FileStream(local, FileMode.Create))
+            {
+                JpegBitmapEncoder jEncoder = new JpegBitmapEncoder();
+                jEncoder.Frames.Add(BitmapFrame.Create(image));
+                jEncoder.Save(mStream);
+            }
         }
 
-        private BitmapImage _cloned;
+
+
 
         public MainWindow()
         {
@@ -103,6 +121,10 @@ namespace WpFVersion
 
             }
 
+            BackgroundWorker worker = new BackgroundWorker();
+            worker.WorkerReportsProgress = true;
+            worker.DoWork += worker_DoWork;
+            worker.ProgressChanged += worker_ProgressChanged;
 
             //Get numbers
             if (!String.IsNullOrEmpty(TbFilas.Text) || Convert.ToUInt32(TbFilas.Text) > 5)
@@ -142,6 +164,8 @@ namespace WpFVersion
                 {
                     try
                     {
+                        GC.Collect();
+                        GC.WaitForPendingFinalizers();
                         File.Delete(cf);
 
                     }
@@ -178,6 +202,8 @@ namespace WpFVersion
 
                 }
             }
+
+
         }
     }
 }

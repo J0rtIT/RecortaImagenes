@@ -10,7 +10,7 @@
           AllowDrop="True" Drop="Grid_Drop" Background="Transparent">
         <Label Content="Rows" HorizontalAlignment="Left" Margin="48,33,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.047,-0.37"/>
         <Label Content="Columns" HorizontalAlignment="Left" Margin="29,65,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.047,-0.37"/>
-        <ProgressBar HorizontalAlignment="Left" Height="19" Margin="18,135,0,0" VerticalAlignment="Top" Width="336"/>
+        <ProgressBar x:Name="Pbar" HorizontalAlignment="Left" Height="19" Margin="18,135,0,0" VerticalAlignment="Top" Width="336"/>
         <TextBox x:Name="TbFilas" HorizontalAlignment="Left" Height="23" Margin="102,37,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="252" UndoLimit="10"/>
         <TextBox x:Name="TbColumnas" HorizontalAlignment="Left" Height="23" Margin="102,66,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="252"/>
         <Label Content="Output" HorizontalAlignment="Left" Margin="37,94,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.047,-0.37"/>
