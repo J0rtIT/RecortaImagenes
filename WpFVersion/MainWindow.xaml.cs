@@ -11,7 +11,7 @@ namespace WpFVersion
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
 
         void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -22,7 +22,7 @@ namespace WpFVersion
         {
             for (int i = 0; i < 100; i++)
             {
-                (sender as BackgroundWorker).ReportProgress(i);
+                (sender as BackgroundWorker)?.ReportProgress(i);
                 Thread.Sleep(100);
             }
         }
@@ -80,7 +80,7 @@ namespace WpFVersion
 
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void BtnClear_Click(object sender, RoutedEventArgs e)
         {
             TbFilas.Text = "";
             TbColumnas.Text = "";
@@ -96,7 +96,7 @@ namespace WpFVersion
 
             if (_currentImage.UriSource == null)
             {
-                LbResult.Content = "Drag an Image";
+                LbResult.Content = "Drag an Image to above section";
                 return;
             }
 
@@ -148,7 +148,7 @@ namespace WpFVersion
 
 
             //get path
-            _path = $"{TbTarget.Text}\\InstagramFeed";
+            _path = $"{TbTarget.Text}";//\\InstagramFeed";
 
             //if doesnt exist create it 
             if (!Directory.Exists(_path))
@@ -157,10 +157,10 @@ namespace WpFVersion
             }
 
             //Cleaning
-            var AllFiles = Directory.GetFiles(_path);
-            if (AllFiles.Length > 0)
+            var allFiles = Directory.GetFiles(_path);
+            if (allFiles.Length > 0)
             {
-                foreach (var cf in AllFiles)
+                foreach (var cf in allFiles)
                 {
                     try
                     {
@@ -179,7 +179,7 @@ namespace WpFVersion
 
 
             //divide pixels between 
-            int Height = (int)Math.Floor(_currentImage.PixelHeight / (double)filas);
+            int height = (int)Math.Floor(_currentImage.PixelHeight / (double)filas);
             int width = (int)Math.Floor(_currentImage.PixelWidth / (double)columnas);
 
             uint k = filas * columnas;
@@ -190,7 +190,7 @@ namespace WpFVersion
                 {
                     try
                     {
-                        Int32Rect rect = new Int32Rect(i * width, j * Height, width, Height);
+                        Int32Rect rect = new Int32Rect(i * width, j * height, width, height);
                         CroppedBitmap segment = new CroppedBitmap(_currentImage, rect);
                         saveCroppedBitmap(segment, _path, k);
                         k--;
@@ -204,6 +204,22 @@ namespace WpFVersion
             }
 
 
+        }
+
+
+        private void BtnChange_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new System.Windows.Forms.FolderBrowserDialog();
+            System.Windows.Forms.DialogResult result = dialog.ShowDialog();
+
+            if (!string.IsNullOrWhiteSpace(dialog.SelectedPath) && result == System.Windows.Forms.DialogResult.OK && Directory.Exists(dialog.SelectedPath))
+            {
+                TbTarget.Text = dialog.SelectedPath;
+            }
+            else
+            {
+                LbResult.Content = "Problem, Target Folder Doesn't exists";
+            }
         }
     }
 }
