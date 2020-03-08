@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -11,8 +12,11 @@ namespace WpFVersion
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+
     public partial class MainWindow
     {
+        private const double Columnas = 3.0;
+
 
         void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
@@ -28,7 +32,9 @@ namespace WpFVersion
         }
 
         private BitmapImage _currentImage = new BitmapImage();
-        private string _path;
+        static string _mes = DateTime.Now.ToString("MMMM", CultureInfo.InvariantCulture);
+        static string _dia = DateTime.Now.Day.ToString();
+        private string _path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\{_mes}{_dia}\\";
 
         void saveCroppedBitmap(CroppedBitmap image, string path, uint k)
         {
@@ -45,12 +51,11 @@ namespace WpFVersion
 
 
 
+
         public MainWindow()
         {
             InitializeComponent();
-            TbColumnas.Text = "3";
-            TbFilas.Text = "3";
-            TbTarget.Text = "C:\\";
+            TbTarget.Text = _path;
         }
 
         private void BtExit_Click(object sender, RoutedEventArgs e)
@@ -82,17 +87,11 @@ namespace WpFVersion
 
         private void BtnClear_Click(object sender, RoutedEventArgs e)
         {
-            TbFilas.Text = "";
-            TbColumnas.Text = "";
-            TbTarget.Text = "";
+            TbTarget.Text = _path;
         }
-
-
 
         private void BtRun_Click(object sender, RoutedEventArgs e)
         {
-            uint filas = 0;
-            uint columnas = 0;
 
             if (_currentImage.UriSource == null)
             {
@@ -126,31 +125,10 @@ namespace WpFVersion
             worker.DoWork += worker_DoWork;
             worker.ProgressChanged += worker_ProgressChanged;
 
-            //Get numbers
-            if (!String.IsNullOrEmpty(TbFilas.Text) || Convert.ToUInt32(TbFilas.Text) > 5)
-            {
-                uint.TryParse(TbFilas.Text, out filas);
-            }
-            else
-            {
-                LbResult.Content = "Rows must be a numeric value and less than 5";
-            }
-
-            if (!String.IsNullOrEmpty(TbColumnas.Text) || Convert.ToUInt32(TbColumnas.Text) > 5)
-            {
-                uint.TryParse(TbColumnas.Text, out columnas);
-            }
-            else
-            {
-                LbResult.Content = "Columns must be a numeric value and less than 5";
-            }
-
-
-
             //get path
-            _path = $"{TbTarget.Text}";//\\InstagramFeed";
+            _path = $"{TbTarget.Text}";
 
-            //if doesnt exist create it 
+            //if doesn't exist create it 
             if (!Directory.Exists(_path))
             {
                 Directory.CreateDirectory(_path);
@@ -179,14 +157,17 @@ namespace WpFVersion
 
 
             //divide pixels between 
-            int height = (int)Math.Floor(_currentImage.PixelHeight / (double)filas);
-            int width = (int)Math.Floor(_currentImage.PixelWidth / (double)columnas);
+            int width = (int)Math.Floor(_currentImage.PixelWidth / Columnas);
+            int height = width;
 
-            uint k = filas * columnas;
+            int filas = (int)Math.Floor(_currentImage.PixelHeight / (double)height);
 
-            for (int j = 0; j < filas; j++)
+
+            uint k = (uint)(Columnas * filas);
+
+            for (var j = 0; j < filas; j++)
             {
-                for (int i = 0; i < columnas; i++)
+                for (var i = 0; i < (int)Columnas; i++)
                 {
                     try
                     {
