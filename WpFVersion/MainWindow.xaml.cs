@@ -15,8 +15,9 @@ namespace WpFVersion
 
     public partial class MainWindow
     {
-        private const double Columnas = 3.0;
 
+        private const double _columnas = 3.0;
+        private int _filas;
 
         void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
@@ -48,13 +49,11 @@ namespace WpFVersion
             }
         }
 
-
-
-
-
         public MainWindow()
         {
+
             InitializeComponent();
+            TbRows.Text = "3";
             TbTarget.Text = _path;
         }
 
@@ -63,7 +62,7 @@ namespace WpFVersion
             Application.Current.Shutdown();
         }
 
-        private void Grid_Drop(object sender, DragEventArgs e)
+        private async void Grid_Drop(object sender, DragEventArgs e)
         {
             if (null != e.Data && e.Data.GetDataPresent(DataFormats.FileDrop))
             {
@@ -74,8 +73,8 @@ namespace WpFVersion
                 {
                     Uri uri = new Uri(bm, UriKind.Absolute);
                     _currentImage = new BitmapImage(uri);
-                    Img.Source = new BitmapImage(uri);
-                    LbResult.Content = $"Loaded: {_currentImage.Width}x{_currentImage.Height}";
+                    Img.Source =  new BitmapImage(uri);
+                    LbResult.Content = $"Loaded: {_currentImage.PixelWidth}x{_currentImage.PixelHeight}";
                 }
             }
             else
@@ -100,7 +99,7 @@ namespace WpFVersion
             }
 
 
-            if (string.IsNullOrEmpty(TbTarget.Text))
+            if (string.IsNullOrEmpty(TbTarget.Text) && string.IsNullOrWhiteSpace(TbRows.Text) && Convert.ToInt32(TbRows.Text) >= 3)
             {
                 //Path
                 if (!Directory.Exists(_path))
@@ -155,38 +154,111 @@ namespace WpFVersion
                 LbResult.Content = $"Path cleared '{_path}'";
             }
 
-
-            //divide pixels between 
-            int width = (int)Math.Floor(_currentImage.PixelWidth / Columnas);
+            int width = (int)Math.Floor(_currentImage.PixelWidth / _columnas);
             int height = width;
+            
 
-            int filas = (int)Math.Floor(_currentImage.PixelHeight / (double)height);
-
-
-            uint k = (uint)(Columnas * filas);
-
-            for (var j = 0; j < filas; j++)
+            if (_currentImage.PixelWidth == _currentImage.PixelHeight)
             {
-                for (var i = 0; i < (int)Columnas; i++)
-                {
-                    try
-                    {
-                        Int32Rect rect = new Int32Rect(i * width, j * height, width, height);
-                        CroppedBitmap segment = new CroppedBitmap(_currentImage, rect);
-                        saveCroppedBitmap(segment, _path, k);
-                        k--;
-                    }
-                    catch (Exception ex)
-                    {
-                        LbResult.Content = ex.Message;
-                    }
+                //It's a square
+                _filas = (int)Math.Floor(_currentImage.PixelHeight / (double)height);
+                uint k = (uint)(_columnas * _filas);
 
+                for (var j = 0; j < _filas; j++)
+                {
+                    for (var i = 0; i < (int)_columnas; i++)
+                    {
+                        try
+                        {
+                            Int32Rect rect = new Int32Rect(i * width, j * height, width, height);
+                            CroppedBitmap segment = new CroppedBitmap(_currentImage, rect);
+                            saveCroppedBitmap(segment, _path, k);
+                            k--;
+                        }
+                        catch (Exception ex)
+                        {
+                            LbResult.Content = ex.Message;
+                        }
+
+                    }
+                }
+            }
+            else if(_currentImage.PixelWidth > _currentImage.PixelHeight)
+            {
+                int.TryParse(TbRows.Text, out _filas);
+                int candidateHeight = (int)Math.Floor(_currentImage.PixelHeight / (double)_filas);
+                width = candidateHeight;
+
+                int MitadDeLaFoto= (int)Math.Floor(_currentImage.PixelWidth / 2.0);
+                int Medio = MitadDeLaFoto - (int)(width * 1.5);
+
+                //landscape
+                uint k = (uint)(_columnas * _filas);
+
+                for (var j = 0; j < _filas; j++)
+                {
+                    for (var i = 0; i < (int)_columnas; i++)
+                    {
+                        try
+                        {
+                            Int32Rect rect = new Int32Rect(Medio + (i * width), j * candidateHeight, width, candidateHeight);
+                            CroppedBitmap segment = new CroppedBitmap(_currentImage, rect);
+                            saveCroppedBitmap(segment, _path, k);
+                            k--;
+                        }
+                        catch (Exception ex)
+                        {
+                            LbResult.Content = ex.Message;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                int.TryParse(TbRows.Text, out _filas);
+                int candidateHeight = (int)Math.Floor(_currentImage.PixelHeight / (double)_filas);
+
+                if (candidateHeight < width )
+                {
+                    //use candidateheigh
+                    width = candidateHeight;
+                    height = candidateHeight;
+                }
+                //portrait+
+                int MitadDeLaFoto = (int)Math.Floor(_currentImage.PixelWidth / 2.0);
+                int Start = MitadDeLaFoto - (int) (width * 1.5);
+
+               
+
+                //landscape
+                uint k = (uint)(_columnas * _filas);
+
+                for (var j = 0; j < _filas; j++)
+                {
+                    for (var i = 0; i < (int)_columnas; i++)
+                    {
+                        try
+                        {
+                            Int32Rect rect = new Int32Rect(Start + (i * width), j * height, width, height);
+                            CroppedBitmap segment = new CroppedBitmap(_currentImage, rect);
+                            saveCroppedBitmap(segment, _path, k);
+                            k--;
+                        }
+                        catch (Exception ex)
+                        {
+                            LbResult.Content = ex.Message;
+                        }
+                    }
                 }
             }
 
 
-        }
 
+
+           
+
+
+        }
 
         private void BtnChange_Click(object sender, RoutedEventArgs e)
         {
