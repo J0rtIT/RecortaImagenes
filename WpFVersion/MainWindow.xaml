@@ -20,7 +20,7 @@
         <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="230" Margin="401,15,0,0" VerticalAlignment="Top" Width="230">
             <Image x:Name="Img" Margin="5,5,0,0" AllowDrop="True" Panel.ZIndex="30" MaxWidth="180" MaxHeight="180" Stretch="Uniform" Height="218" VerticalAlignment="Top" HorizontalAlignment="Left" Width="219"/>
         </Border>
-        <Label x:Name="LbResult" Content="" HorizontalAlignment="Center" Margin="40,187,380,0" VerticalAlignment="Top" RenderTransformOrigin="0.047,-0.37" Width="199"/>
+        <Label x:Name="LbResult" Content="" HorizontalAlignment="Center" Margin="30,185,278,0" VerticalAlignment="Top" RenderTransformOrigin="0.047,-0.37" Width="345"/>
 
         <Grid HorizontalAlignment="Left" Height="70" Margin="31,197,0,-5" VerticalAlignment="Top" Width="353">
             <Button x:Name="BtRun" Content="Run" HorizontalAlignment="Left" Margin="6,21,0,0" VerticalAlignment="Top" Width="95" Click="BtRun_Click"/>

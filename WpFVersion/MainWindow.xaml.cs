@@ -284,7 +284,7 @@ namespace WpFVersion
             }
             else
             {
-                LbResult.Content = $"The Folder {TbTarget.Text} doesn't exists"; 
+                LbResult.Content = $"The target folder on Output doesn't exists"; 
             }
         }
     }
