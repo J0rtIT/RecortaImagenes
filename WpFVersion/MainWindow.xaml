@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="MainWindow" Height="292.558" Width="661.003">
+        Title="WPF image Cutter for IG" Height="292.558" Width="661.003">
     <Grid HorizontalAlignment="Stretch" DockPanel.Dock="Top" Height="Auto" 
           AllowDrop="True" Drop="Grid_Drop" Background="Transparent">
         <Grid HorizontalAlignment="Left" Height="92" Margin="10,10,0,0" VerticalAlignment="Top" Width="335">

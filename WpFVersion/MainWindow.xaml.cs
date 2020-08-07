@@ -6,6 +6,8 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows;
+using System.Windows.Automation.Peers;
+using System.Windows.Automation.Provider;
 using System.Windows.Media.Imaging;
 
 namespace WpFVersion
@@ -252,13 +254,6 @@ namespace WpFVersion
                     }
                 }
             }
-
-
-
-
-           
-
-
         }
 
         private void BtnChange_Click(object sender, RoutedEventArgs e)
@@ -278,13 +273,31 @@ namespace WpFVersion
 
         private void BtnGo_Click(object sender, RoutedEventArgs e)
         {
+
             if (!string.IsNullOrWhiteSpace(TbTarget.Text) && Directory.Exists(TbTarget.Text))
             {
                 Process.Start(TbTarget.Text);
             }
             else
             {
-                LbResult.Content = $"The target folder on Output doesn't exists"; 
+                MessageBoxResult result = MessageBox.Show("No folder has been found, want to execute the program?", App.Current.MainWindow.Title, MessageBoxButton.YesNoCancel);
+                switch (result)
+                {
+                    case MessageBoxResult.Yes:
+                        ButtonAutomationPeer peer = new ButtonAutomationPeer(BtRun);
+                        IInvokeProvider invokeProv = peer.GetPattern(PatternInterface.Invoke) as IInvokeProvider;
+                        invokeProv.Invoke();
+                        LbResult.Content = $"Executed";
+                        break;
+                    case MessageBoxResult.No:
+                        LbResult.Content = $"The target folder on Output doesn't exists";
+                        break;
+                    case MessageBoxResult.Cancel:
+                        LbResult.Content = $"The target folder on Output doesn't exists";
+                        break;
+                }
+
+                
             }
         }
     }
