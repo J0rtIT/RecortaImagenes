@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -272,6 +273,18 @@ namespace WpFVersion
             else
             {
                 LbResult.Content = "Problem, Target Folder Doesn't exists";
+            }
+        }
+
+        private void BtnGo_Click(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(TbTarget.Text) && Directory.Exists(TbTarget.Text))
+            {
+                Process.Start(TbTarget.Text);
+            }
+            else
+            {
+                LbResult.Content = $"The Folder {TbTarget.Text} doesn't exists"; 
             }
         }
     }

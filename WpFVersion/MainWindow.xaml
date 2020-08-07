@@ -10,7 +10,8 @@
         <Grid HorizontalAlignment="Left" Height="92" Margin="10,10,0,0" VerticalAlignment="Top" Width="335">
             <Label Content="Output" HorizontalAlignment="Left" Margin="10,23,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.047,-0.37"/>
             <TextBox x:Name="TbTarget" HorizontalAlignment="Left" Height="23" Margin="66,27,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="252" />
-            <Button x:Name="BtnChange" Content="Change" HorizontalAlignment="Left" Margin="114,60,0,0" VerticalAlignment="Top" Width="94" Click="BtnChange_Click"/>
+            <Button x:Name="BtnChange" Content="Change" HorizontalAlignment="Left" Margin="68,59,0,0" VerticalAlignment="Top" Width="94" Click="BtnChange_Click"/>
+            <Button x:Name="BtnGo" Content="Go" HorizontalAlignment="Left" Margin="223,59,0,0" VerticalAlignment="Top" Width="94" Click="BtnGo_Click"/>
         </Grid>
 
         <ProgressBar x:Name="Pbar" HorizontalAlignment="Left" Height="24" Margin="39,150,0,0" VerticalAlignment="Top" Width="290"/>
