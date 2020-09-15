@@ -29,5 +29,6 @@
         </Grid>
         <Label x:Name="FLabel" Content="Rows" HorizontalAlignment="Left" Margin="28,110,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.047,-0.37"/>
         <TextBox x:Name="TbRows" HorizontalAlignment="Left" Height="23" Margin="76,111,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="252" />
+        <Button x:Name="BtnPublish" Content="Publish" HorizontalAlignment="Left" Margin="156,185,0,0" VerticalAlignment="Top" Width="95" Click="BtnPublish_Click" />
     </Grid>
 </Window>

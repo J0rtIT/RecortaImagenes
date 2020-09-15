@@ -22,6 +22,8 @@ namespace WpFVersion
         private const double _columnas = 3.0;
         private int _filas;
 
+        private string Token =
+            "IGQVJYSXRQTVFQMkRwRTNHakYxTnVJcW5CaGE1bEJMMWNiak9YTVhfZAFd3Y1ZAnVjk2U1Uwem5aRnRGZA3BhQVV4RlVuNDZAuMmZArNGR0aHNWUmp2eENNbTlxOWxwUm9fdUdNb3l1Tjh3";
         void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             Pbar.Value = e.ProgressPercentage;
@@ -76,7 +78,7 @@ namespace WpFVersion
                 {
                     Uri uri = new Uri(bm, UriKind.Absolute);
                     _currentImage = new BitmapImage(uri);
-                    Img.Source =  new BitmapImage(uri);
+                    Img.Source = new BitmapImage(uri);
                     LbResult.Content = $"Loaded: {_currentImage.PixelWidth}x{_currentImage.PixelHeight}";
                 }
             }
@@ -159,7 +161,7 @@ namespace WpFVersion
 
             int width = (int)Math.Floor(_currentImage.PixelWidth / _columnas);
             int height = width;
-            
+
 
             if (_currentImage.PixelWidth == _currentImage.PixelHeight)
             {
@@ -186,13 +188,23 @@ namespace WpFVersion
                     }
                 }
             }
-            else if(_currentImage.PixelWidth > _currentImage.PixelHeight)
+            else if (_currentImage.PixelWidth > _currentImage.PixelHeight)
             {
                 int.TryParse(TbRows.Text, out _filas);
                 int candidateHeight = (int)Math.Floor(_currentImage.PixelHeight / (double)_filas);
-                width = candidateHeight;
 
-                int MitadDeLaFoto= (int)Math.Floor(_currentImage.PixelWidth / 2.0);
+                if (!(candidateHeight < height))
+                {
+                    width = height;
+                }
+                else
+                {
+                    width = candidateHeight;
+                }
+
+
+
+                int MitadDeLaFoto = (int)Math.Floor(_currentImage.PixelWidth / 2.0);
                 int Medio = MitadDeLaFoto - (int)(width * 1.5);
 
                 //landscape
@@ -221,7 +233,7 @@ namespace WpFVersion
                 int.TryParse(TbRows.Text, out _filas);
                 int candidateHeight = (int)Math.Floor(_currentImage.PixelHeight / (double)_filas);
 
-                if (candidateHeight < width )
+                if (candidateHeight < width)
                 {
                     //use candidateheigh
                     width = candidateHeight;
@@ -229,9 +241,9 @@ namespace WpFVersion
                 }
                 //portrait+
                 int MitadDeLaFoto = (int)Math.Floor(_currentImage.PixelWidth / 2.0);
-                int Start = MitadDeLaFoto - (int) (width * 1.5);
+                int Start = MitadDeLaFoto - (int)(width * 1.5);
 
-               
+
 
                 //landscape
                 uint k = (uint)(_columnas * _filas);
@@ -297,8 +309,28 @@ namespace WpFVersion
                         break;
                 }
 
-                
+
             }
         }
+
+
+        public void publish(string FilePathFile)
+        {
+
+
+
+        }
+
+        private void BtnPublish_Click(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(TbTarget.Text) && Directory.Exists(TbTarget.Text))
+            {
+                foreach (var file in Directory.GetFiles(TbTarget.Text))
+                {
+                    publish(file);
+                }
+            }
+        }
+
     }
 }

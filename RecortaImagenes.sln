@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.779
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30503.244
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecortaImagenes", "RecortaImagenes\RecortaImagenes.csproj", "{01CC054A-52E0-4B6C-B40D-030169990D8F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpFVersion", "WpFVersion\WpFVersion.csproj", "{ACF8A2B1-8725-469E-8A86-34EF6A33DF4A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IG Cutter", "WpFVersion\IG Cutter.csproj", "{ACF8A2B1-8725-469E-8A86-34EF6A33DF4A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
