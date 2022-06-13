@@ -22,8 +22,7 @@ namespace WpFVersion
         private const double _columnas = 3.0;
         private int _filas;
 
-        private string Token =
-            "IGQVJYSXRQTVFQMkRwRTNHakYxTnVJcW5CaGE1bEJMMWNiak9YTVhfZAFd3Y1ZAnVjk2U1Uwem5aRnRGZA3BhQVV4RlVuNDZAuMmZArNGR0aHNWUmp2eENNbTlxOWxwUm9fdUdNb3l1Tjh3";
+        //private string Token ="IGQVJYSXRQTVFQMkRwRTNHakYxTnVJcW5CaGE1bEJMMWNiak9YTVhfZAFd3Y1ZAnVjk2U1Uwem5aRnRGZA3BhQVV4RlVuNDZAuMmZArNGR0aHNWUmp2eENNbTlxOWxwUm9fdUdNb3l1Tjh3";
         void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             Pbar.Value = e.ProgressPercentage;
